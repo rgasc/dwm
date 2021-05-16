@@ -2,3 +2,5 @@ dwm
 config.def.h
 *.o
 *.diff
+*.orig
+*.rej
