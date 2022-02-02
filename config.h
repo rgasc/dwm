@@ -25,8 +25,8 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor */
-    { NULL,       NULL,       NULL,       0,            0,           -1 },
+    /* class                instance    title       tags mask     isfloating   monitor */
+    { "Blueman-manager",    NULL,       NULL,       0,            1,           -1 },
 };
 
 /* layout(s) */
@@ -58,49 +58,68 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-i", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
+#include <X11/XF86keysym.h>
+
 static Key keys[] = {
-    /* modifier                     key        function        argument */
     /* SPAWN */
-    { MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-    { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+    { MODKEY,               XK_d,       spawn,  {.v = dmenucmd } },
+    { MODKEY,               XK_Return,  spawn,  {.v = termcmd } },
+    { MODKEY,               XK_p,       spawn,  SHCMD("st -e htop") },
+    { MODKEY,               XK_v,       spawn,  SHCMD("st -e pulsemixer") },
+    { MODKEY|ShiftMask,     XK_v,       spawn,  SHCMD("noisetorch") },
+    { MODKEY,               XK_w,       spawn,  SHCMD("firefox") },
+    { MODKEY,               XK_s,       spawn,  SHCMD("signal-desktop --use-tray-icon") },
+    { 0,                    XK_Print,   spawn,  SHCMD("maim -s | xclip -selection clipboard -t image/png") },
+    { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
+    { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
+    { MODKEY|ShiftMask,     XK_z,       spawn,  SHCMD("xclip -selection primary -i /dev/null && xclip -selection clipboard -i /dev/null") },
+
+    /* FUNCTION KEYS */
+    { 0,    XF86XK_Tools,               spawn,  SHCMD("xset dpms force off") },
+    { 0,    XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -inc 10") },
+    { 0,    XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -dec 10") },
+    { 0,    XF86XK_AudioRaiseVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%") },
+    { 0,    XF86XK_AudioLowerVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%") },
+    { 0,    XF86XK_AudioMute,           spawn,  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
+    { 0,    XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 
     /* MANAGE WINDOWS */
-    { MODKEY,                       XK_j,      focusstack,     {.i = +1 } }, /* move to next window */
-    { MODKEY,                       XK_k,      focusstack,     {.i = -1 } }, /* move to previous window */
-    { MODKEY|ShiftMask,             XK_equal,  incnmaster,     {.i = +1 } }, /* increase # of master windows */
-    { MODKEY|ShiftMask,             XK_minus,  incnmaster,     {.i = -1 } }, /* decrease # of master windows */
-    { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} }, /* increase window width */
-    { MODKEY,                       XK_h,      setmfact,       {.f = -0.05} }, /* decrease window width */
-    { MODKEY|ShiftMask,             XK_Return, zoom,           {0} }, /* make window master */
-    { MODKEY,                       XK_Tab,    view,           {0} }, /* switch between tags */
-    { MODKEY|ShiftMask,             XK_q,      killclient,     {0} }, /* close window */
-    { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} }, /* make window float */
-    { MODKEY,                       XK_0,      view,           {.ui = ~0 } }, /* show all windows */
-    { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } }, /* show window on all tags */
-    { MODKEY,                       XK_period, focusmon,       {.i = +1 } }, /* next monitor */
-    { MODKEY,                       XK_comma,  focusmon,       {.i = -1 } }, /* previous monitor */
-    { MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } }, /* move window to next monitor */
-    { MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } }, /* move window to next monitor */
+    { MODKEY,               XK_j,       focusstack,     {.i = +1 } }, /* move to next window */
+    { MODKEY,               XK_k,       focusstack,     {.i = -1 } }, /* move to previous window */
+    { MODKEY|ShiftMask,     XK_equal,   incnmaster,     {.i = +1 } }, /* increase # of master windows */
+    { MODKEY|ShiftMask,     XK_minus,   incnmaster,     {.i = -1 } }, /* decrease # of master windows */
+    { MODKEY,               XK_l,       setmfact,       {.f = +0.05} }, /* increase window width */
+    { MODKEY,               XK_h,       setmfact,       {.f = -0.05} }, /* decrease window width */
+    { MODKEY|ShiftMask,     XK_Return,  zoom,           {0} }, /* make window master */
+    { MODKEY,               XK_Tab,     view,           {0} }, /* switch between tags */
+    { MODKEY|ShiftMask,     XK_q,       killclient,     {0} }, /* close window */
+    { MODKEY|ShiftMask,     XK_space,   togglefloating, {0} }, /* make window float */
+    { MODKEY,               XK_0,       view,           {.ui = ~0 } }, /* show all windows */
+    { MODKEY|ShiftMask,     XK_0,       tag,            {.ui = ~0 } }, /* show window on all tags */
+    { MODKEY,               XK_period,  focusmon,       {.i = +1 } }, /* next monitor */
+    { MODKEY,               XK_comma,   focusmon,       {.i = -1 } }, /* previous monitor */
+    { MODKEY|ShiftMask,     XK_period,  tagmon,         {.i = +1 } }, /* move window to next monitor */
+    { MODKEY|ShiftMask,     XK_comma,   tagmon,         {.i = -1 } }, /* move window to next monitor */
 
     /* LAYOUTS */
-    { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} }, /* tile layout */
-    { MODKEY|ShiftMask,             XK_space,  setlayout,      {.v = &layouts[1]} }, /* float layout */
-    { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} }, /* monocle layout */
+    { MODKEY,   XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
+    { MODKEY,   XK_f,   setlayout,  {.v = &layouts[1]} }, /* float layout */
+    { MODKEY,   XK_m,   setlayout,  {.v = &layouts[2]} }, /* monocle layout */
 
     /* OTHER */
-    { MODKEY|ShiftMask,             XK_b,      togglebar,      {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask,             XK_e,      quit,           {0} }, /* quit dwm */
+    { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
+    { MODKEY|ShiftMask,     XK_r,   quit,       {0} }, /* quit dwm */
 
     /* TAGS */
-    TAGKEYS(                        XK_1,                      0)
-    TAGKEYS(                        XK_2,                      1)
-    TAGKEYS(                        XK_3,                      2)
-    TAGKEYS(                        XK_4,                      3)
-    TAGKEYS(                        XK_5,                      4)
-    TAGKEYS(                        XK_6,                      5)
-    TAGKEYS(                        XK_7,                      6)
-    TAGKEYS(                        XK_8,                      7)
-    TAGKEYS(                        XK_9,                      8)
+    TAGKEYS(XK_1, 0)
+    TAGKEYS(XK_2, 1)
+    TAGKEYS(XK_3, 2)
+    TAGKEYS(XK_4, 3)
+    TAGKEYS(XK_5, 4)
+    TAGKEYS(XK_6, 5)
+    TAGKEYS(XK_7, 6)
+    TAGKEYS(XK_8, 7)
+    TAGKEYS(XK_9, 8)
 };
 
 /* button definitions */
