@@ -11,14 +11,14 @@ static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Iosevka Extended:size=10" };
-static const char colour1[]         = "#1d1f21";
+static const char colour1[]         = "#181a1b";
 static const char colour2[]         = "#0c0d0e";
 static const char colour3[]         = "#c5c8c6";
 static const char *colors[][3]      = {
-    /*                  fg         bg          border   */
+    /*                  fg          bg          border   */
     [SchemeNorm]    = { colour3,    colour1,    colour2 },
-    [SchemeSel]     = { colour2,    colour3,    colour3 },
-	[SchemeTitle]   = { colour3,    colour2,    colour2 },
+    [SchemeSel]     = { colour1,    colour3,    colour3 },
+	[SchemeTitle]   = { colour1,    colour3,    colour3 },
 };
 
 /* tagging */
