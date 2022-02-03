@@ -18,7 +18,7 @@ static const char *colors[][3]      = {
     /*                  fg          bg          border   */
     [SchemeNorm]    = { colour3,    colour1,    colour2 },
     [SchemeSel]     = { colour1,    colour3,    colour3 },
-	[SchemeTitle]   = { colour1,    colour3,    colour3 },
+	[SchemeTitle]   = { colour3,    colour1,    colour1 },
 };
 
 /* tagging */
@@ -74,19 +74,22 @@ static Key keys[] = {
     { MODKEY|ShiftMask,     XK_v,       spawn,  SHCMD("noisetorch") },
     { MODKEY,               XK_w,       spawn,  SHCMD("firefox") },
     { MODKEY,               XK_s,       spawn,  SHCMD("signal-desktop --use-tray-icon") },
+    { MODKEY|ShiftMask,     XK_s,       spawn,  SHCMD("resize_signal") },
     { 0,                    XK_Print,   spawn,  SHCMD("maim -s -u | xclip -selection clipboard -t image/png") },
     { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
     { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
     { MODKEY|ShiftMask,     XK_z,       spawn,  SHCMD("xclip -selection primary -i /dev/null && xclip -selection clipboard -i /dev/null") },
 
     /* FUNCTION KEYS */
-    { 0,    XF86XK_Tools,               spawn,  SHCMD("xset dpms force off") },
-    { 0,    XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -inc 10") },
-    { 0,    XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -dec 10") },
-    { 0,    XF86XK_AudioRaiseVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%") },
-    { 0,    XF86XK_AudioLowerVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%") },
-    { 0,    XF86XK_AudioMute,           spawn,  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
-    { 0,    XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
+    { 0,            XF86XK_Tools,               spawn,  SHCMD("xset dpms force off") },
+    { 0,            XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -inc 10") },
+    { 0,            XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -dec 10") },
+    { ShiftMask,    XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -set 100") },
+    { ShiftMask,    XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -set 1") },
+    { 0,            XF86XK_AudioRaiseVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%") },
+    { 0,            XF86XK_AudioLowerVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%") },
+    { 0,            XF86XK_AudioMute,           spawn,  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
+    { 0,            XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 
     /* MANAGE WINDOWS */
     { MODKEY,               XK_j,       focusstack,     {.i = +1 } }, /* move to next window */
