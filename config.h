@@ -87,13 +87,13 @@ static Key keys[] = {
 
     /* FUNCTION KEYS */
     { 0,            XF86XK_Tools,               spawn,  SHCMD("xset dpms force off") },
-    { 0,            XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -inc 10") },
-    { 0,            XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -dec 10") },
-    { ShiftMask,    XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -set 100") },
-    { ShiftMask,    XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -set 1") },
-    { 0,            XF86XK_AudioRaiseVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5%") },
-    { 0,            XF86XK_AudioLowerVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5%") },
-    { 0,            XF86XK_AudioMute,           spawn,  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle") },
+    { 0,            XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -inc 10 && kill -10 $(pidof slstatus)") },
+    { 0,            XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -dec 10 && kill -10 $(pidof slstatus)") },
+    { ShiftMask,    XF86XK_MonBrightnessUp,     spawn,  SHCMD("xbacklight -set 100 && kill -10 $(pidof slstatus)") },
+    { ShiftMask,    XF86XK_MonBrightnessDown,   spawn,  SHCMD("xbacklight -set 1 && kill -10 $(pidof slstatus)") },
+    { 0,            XF86XK_AudioRaiseVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ +5% && kill -10 $(pidof slstatus)") },
+    { 0,            XF86XK_AudioLowerVolume,    spawn,  SHCMD("pactl set-sink-volume @DEFAULT_SINK@ -5% && kill -10 $(pidof slstatus)") },
+    { 0,            XF86XK_AudioMute,           spawn,  SHCMD("pactl set-sink-mute @DEFAULT_SINK@ toggle && kill -10 $(pidof slstatus)") },
     { 0,            XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 
     /* MANAGE WINDOWS */
