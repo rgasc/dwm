@@ -6,6 +6,7 @@ static const unsigned int snap      = 32;       /* snap pixel */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
 static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
+static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;        /* 0 means no systray */
 static const int showbar            = 1;        /* 0 means no bar */
@@ -29,9 +30,12 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class                    instance    title       tags mask     isfloating   monitor */
-    { "Blueman-manager",        NULL,       NULL,       0,            1,           -1 },
-    { "Nm-connection-editor",   NULL,       NULL,       0,            1,           -1 },
+    /* class                    instance    title           tags mask   isfloating  isterminal  noswallow   monitor */
+	{ "St",                     NULL,       NULL,           0,          0,          1,          0,          -1 },
+    { NULL,                     NULL,       "Event Tester", 0,          0,          0,          1,          -1 },
+    { "Blueman-manager",        NULL,       NULL,           0,          1,          0,          0,          -1 },
+    { "Nm-connection-editor",   NULL,       NULL,           0,          1,          0,          0,          -1 },
+    { "SpeedCrunch",            NULL,       NULL,           0,          1,          0,          0,          -1 },
 };
 
 /* layout(s) */
@@ -79,6 +83,7 @@ static Key keys[] = {
     { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
     { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
     { MODKEY|ShiftMask,     XK_z,       spawn,  SHCMD("xclip -selection primary -i /dev/null && xclip -selection clipboard -i /dev/null") },
+    { MODKEY|ShiftMask,     XK_e,       spawn,  SHCMD("exit_dmenu") },
 
     /* FUNCTION KEYS */
     { 0,            XF86XK_Tools,               spawn,  SHCMD("xset dpms force off") },
@@ -116,7 +121,7 @@ static Key keys[] = {
 
     /* OTHER */
     { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask,     XK_r,   quit,       {0} }, /* quit dwm */
+    { MODKEY|ShiftMask,     XK_r,   quit,       {0} }, /* restart dwm */
 
     /* TAGS */
     TAGKEYS(XK_1, 0)
