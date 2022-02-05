@@ -97,22 +97,23 @@ static Key keys[] = {
     { 0,            XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 
     /* MANAGE WINDOWS */
-    { MODKEY,               XK_j,       focusstack,     {.i = +1 } }, /* move to next window */
-    { MODKEY,               XK_k,       focusstack,     {.i = -1 } }, /* move to previous window */
-    { MODKEY|ShiftMask,     XK_equal,   incnmaster,     {.i = +1 } }, /* increase # of master windows */
-    { MODKEY|ShiftMask,     XK_minus,   incnmaster,     {.i = -1 } }, /* decrease # of master windows */
-    { MODKEY,               XK_l,       setmfact,       {.f = +0.05} }, /* increase window width */
-    { MODKEY,               XK_h,       setmfact,       {.f = -0.05} }, /* decrease window width */
-    { MODKEY|ShiftMask,     XK_Return,  zoom,           {0} }, /* make window master */
-    { MODKEY,               XK_Tab,     view,           {0} }, /* switch between tags */
-    { MODKEY|ShiftMask,     XK_q,       killclient,     {0} }, /* close window */
-    { MODKEY|ShiftMask,     XK_space,   togglefloating, {0} }, /* make window float */
-    { MODKEY,               XK_0,       view,           {.ui = ~0 } }, /* show all windows */
-    { MODKEY|ShiftMask,     XK_0,       tag,            {.ui = ~0 } }, /* show window on all tags */
-    { MODKEY,               XK_period,  focusmon,       {.i = +1 } }, /* next monitor */
-    { MODKEY,               XK_comma,   focusmon,       {.i = -1 } }, /* previous monitor */
-    { MODKEY|ShiftMask,     XK_period,  tagmon,         {.i = +1 } }, /* move window to next monitor */
-    { MODKEY|ShiftMask,     XK_comma,   tagmon,         {.i = -1 } }, /* move window to next monitor */
+    { MODKEY,               XK_j,       focusstack,             {.i = +1 } }, /* move to next window */
+    { MODKEY,               XK_k,       focusstack,             {.i = -1 } }, /* move to previous window */
+    { MODKEY|ShiftMask,     XK_equal,   incnmaster,             {.i = +1 } }, /* increase # of master windows */
+    { MODKEY|ShiftMask,     XK_minus,   incnmaster,             {.i = -1 } }, /* decrease # of master windows */
+    { MODKEY,               XK_l,       setmfact,               {.f = +0.05} }, /* increase window width */
+    { MODKEY,               XK_h,       setmfact,               {.f = -0.05} }, /* decrease window width */
+    { MODKEY,               XK_space,   togglecanfocusfloating, {0} },
+    { MODKEY|ShiftMask,     XK_space,   togglefloating,         {0} }, /* make window float */
+    { MODKEY|ShiftMask,     XK_Return,  zoom,                   {0} }, /* make window master */
+    { MODKEY,               XK_Tab,     view,                   {0} }, /* switch between tags */
+    { MODKEY|ShiftMask,     XK_q,       killclient,             {0} }, /* close window */
+    { MODKEY,               XK_0,       view,                   {.ui = ~0 } }, /* show all windows */
+    { MODKEY|ShiftMask,     XK_0,       tag,                    {.ui = ~0 } }, /* show window on all tags */
+    { MODKEY,               XK_period,  focusmon,               {.i = +1 } }, /* next monitor */
+    { MODKEY,               XK_comma,   focusmon,               {.i = -1 } }, /* previous monitor */
+    { MODKEY|ShiftMask,     XK_period,  tagmon,                 {.i = +1 } }, /* move window to next monitor */
+    { MODKEY|ShiftMask,     XK_comma,   tagmon,                 {.i = -1 } }, /* move window to next monitor */
 
     /* LAYOUTS */
     { MODKEY,   XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
