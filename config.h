@@ -79,7 +79,6 @@ static const char *termcmd[]  = { "st", NULL };
 
 #include <X11/XF86keysym.h>
 #include "movestack.c"
-
 #include "selfrestart.c"
 
 static Key keys[] = {
@@ -113,6 +112,10 @@ static Key keys[] = {
     /* MANAGE WINDOWS */
     { MODKEY,                       XK_j,       focusstack,             {.i = +1 } }, /* move to next window */
     { MODKEY,                       XK_k,       focusstack,             {.i = -1 } }, /* move to previous window */
+	{ MODKEY,                       XK_Left,    focusdir,               {.i = 0 } }, // focus left
+	{ MODKEY,                       XK_Right,   focusdir,               {.i = 1 } }, // focus right
+	{ MODKEY,                       XK_Up,      focusdir,               {.i = 2 } }, // focus up
+	{ MODKEY,                       XK_Down,    focusdir,               {.i = 3 } }, // focus down
     { MODKEY|ShiftMask,             XK_equal,   incnmaster,             {.i = +1 } }, /* increase # of master windows */
     { MODKEY|ShiftMask,             XK_minus,   incnmaster,             {.i = -1 } }, /* decrease # of master windows */
     { MODKEY,                       XK_l,       setmfact,               {.f = +0.05} }, /* increase window width */
@@ -146,7 +149,7 @@ static Key keys[] = {
 	{ MODKEY,           XK_g,   setlayout,  {.v = &layouts[8]} }, /* gapless grid layout */
 
     /* OTHER */
-    { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
+    { MODKEY|ShiftMask,     XK_b,   togglebar,      {0} }, /* show/hide bar */
     { MODKEY|ShiftMask,     XK_r,   self_restart,   {0} }, /* restart dwm */
 
     /* TAGS */
