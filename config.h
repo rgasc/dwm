@@ -77,6 +77,7 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-i", NULL };
 static const char *termcmd[]  = { "st", NULL };
 
 #include <X11/XF86keysym.h>
+#include "movestack.c"
 
 static Key keys[] = {
     /* SPAWN */
@@ -125,6 +126,8 @@ static Key keys[] = {
     { MODKEY|ShiftMask,     XK_period,  tagmon,                 {.i = +1 } }, /* move window to next monitor */
     { MODKEY|ShiftMask,     XK_comma,   tagmon,                 {.i = -1 } }, /* move window to previous monitor */
     { MODKEY|ControlMask,   XK_space,   focusmaster,            {0} },
+	{ MODKEY|ShiftMask,     XK_j,       movestack,              {.i = +1 } },
+	{ MODKEY|ShiftMask,     XK_k,       movestack,              {.i = -1 } },
 
     /* LAYOUTS */
     { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
