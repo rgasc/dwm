@@ -80,6 +80,8 @@ static const char *termcmd[]  = { "st", NULL };
 #include <X11/XF86keysym.h>
 #include "movestack.c"
 
+#include "selfrestart.c"
+
 static Key keys[] = {
     /* SPAWN */
     { MODKEY,               XK_d,       spawn,  {.v = dmenucmd } },
@@ -145,7 +147,7 @@ static Key keys[] = {
 
     /* OTHER */
     { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask,     XK_r,   quit,       {0} }, /* restart dwm */
+    { MODKEY|ShiftMask,     XK_r,   self_restart,   {0} }, /* restart dwm */
 
     /* TAGS */
     TAGKEYS(XK_1, 0)
