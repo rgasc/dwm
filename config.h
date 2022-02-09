@@ -45,6 +45,7 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
 
 #include "fibonacci.c"
+#include "gaplessgrid.c"
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -56,6 +57,7 @@ static const Layout layouts[] = {
 	{ "[D]",      deck },
  	{ "[@]",      spiral },
  	{ "[\\]",     dwindle },
+ 	{ "###",      gaplessgrid },
 };
 
 /* key definitions */
@@ -133,6 +135,7 @@ static Key keys[] = {
 	{ MODKEY,           XK_x,   setlayout,  {.v = &layouts[5]} }, /* deck layout */
 	{ MODKEY,           XK_o,   setlayout,  {.v = &layouts[6]} }, /* fibonacci spiral layout */
 	{ MODKEY|ShiftMask, XK_o,   setlayout,  {.v = &layouts[7]} }, /* fibonacci dwindle layout */
+	{ MODKEY,           XK_g,   setlayout,  {.v = &layouts[8]} }, /* gapless grid layout */
 
     /* OTHER */
     { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
