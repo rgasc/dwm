@@ -49,6 +49,8 @@ static const Layout layouts[] = {
     { "[]=",      tile },    /* first entry is default */
     { "><>",      NULL },    /* no layout function means floating behavior */
     { "[M]",      monocle },
+	{ "|M|",      centeredmaster },
+	{ ">M>",      centeredfloatingmaster },
 };
 
 /* key definitions */
@@ -82,6 +84,7 @@ static Key keys[] = {
     { 0,                    XK_Print,   spawn,  SHCMD("maim -s -u | xclip -selection clipboard -t image/png") },
     { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
     { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
+    { MODKEY,               XK_z,       spawn,  SHCMD("hide_signal") },
     { MODKEY|ShiftMask,     XK_z,       spawn,  SHCMD("xclip -selection primary -i /dev/null && xclip -selection clipboard -i /dev/null") },
     { MODKEY|ShiftMask,     XK_e,       spawn,  SHCMD("exit_dmenu") },
 
@@ -113,12 +116,14 @@ static Key keys[] = {
     { MODKEY,               XK_period,  focusmon,               {.i = +1 } }, /* next monitor */
     { MODKEY,               XK_comma,   focusmon,               {.i = -1 } }, /* previous monitor */
     { MODKEY|ShiftMask,     XK_period,  tagmon,                 {.i = +1 } }, /* move window to next monitor */
-    { MODKEY|ShiftMask,     XK_comma,   tagmon,                 {.i = -1 } }, /* move window to next monitor */
+    { MODKEY|ShiftMask,     XK_comma,   tagmon,                 {.i = -1 } }, /* move window to previous monitor */
 
     /* LAYOUTS */
-    { MODKEY,   XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
-    { MODKEY,   XK_f,   setlayout,  {.v = &layouts[1]} }, /* float layout */
-    { MODKEY,   XK_m,   setlayout,  {.v = &layouts[2]} }, /* monocle layout */
+    { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
+    { MODKEY,           XK_f,   setlayout,  {.v = &layouts[1]} }, /* float layout */
+    { MODKEY,           XK_m,   setlayout,  {.v = &layouts[2]} }, /* monocle layout */
+	{ MODKEY,           XK_c,   setlayout,  {.v = &layouts[3]} }, /* centered master layout */
+	{ MODKEY|ShiftMask, XK_c,   setlayout,  {.v = &layouts[4]} }, /* centered floating master layout */
 
     /* OTHER */
     { MODKEY|ShiftMask,     XK_b,   togglebar,  {0} }, /* show/hide bar */
