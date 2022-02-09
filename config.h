@@ -122,6 +122,7 @@ static Key keys[] = {
     { MODKEY,               XK_comma,   focusmon,               {.i = -1 } }, /* previous monitor */
     { MODKEY|ShiftMask,     XK_period,  tagmon,                 {.i = +1 } }, /* move window to next monitor */
     { MODKEY|ShiftMask,     XK_comma,   tagmon,                 {.i = -1 } }, /* move window to previous monitor */
+    { MODKEY|ControlMask,   XK_space,   focusmaster,            {0} },
 
     /* LAYOUTS */
     { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
