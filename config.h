@@ -50,7 +50,8 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
 static const Layout layouts[] = {
     /* symbol     arrange function */
     { "[]=",      tile },    /* first entry is default */
-    { "><>",      NULL },    /* no layout function means floating behavior */
+	{ "TTT",      bstack },
+	{ "===",      bstackhoriz },
     { "[M]",      monocle },
 	{ "|M|",      centeredmaster },
 	{ ">M>",      centeredfloatingmaster },
@@ -58,6 +59,7 @@ static const Layout layouts[] = {
  	{ "[@]",      spiral },
  	{ "[\\]",     dwindle },
  	{ "###",      gaplessgrid },
+    { "><>",      NULL },    /* no layout function means floating behavior */
 };
 
 /* key definitions */
@@ -88,8 +90,8 @@ static Key keys[] = {
     { MODKEY,               XK_v,       spawn,  SHCMD("st -e pulsemixer") },
     { MODKEY|ShiftMask,     XK_v,       spawn,  SHCMD("noisetorch") },
     { MODKEY,               XK_w,       spawn,  SHCMD("firefox") },
-    { MODKEY,               XK_s,       spawn,  SHCMD("signal-desktop --use-tray-icon") },
-    { MODKEY|ShiftMask,     XK_s,       spawn,  SHCMD("resize_signal") },
+    { MODKEY,               XK_y,       spawn,  SHCMD("signal-desktop --use-tray-icon") },
+    { MODKEY|ShiftMask,     XK_y,       spawn,  SHCMD("resize_signal") },
     { 0,                    XK_Print,   spawn,  SHCMD("maim -s -u | xclip -selection clipboard -t image/png") },
     { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
     { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
@@ -109,47 +111,51 @@ static Key keys[] = {
     { 0,            XF86XK_AudioMicMute,        spawn,  SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") },
 
     /* MANAGE WINDOWS */
-    { MODKEY,                       XK_j,       focusstack,             {.i = +1 } }, /* move to next window */
-    { MODKEY,                       XK_k,       focusstack,             {.i = -1 } }, /* move to previous window */
-	{ MODKEY,                       XK_Left,    focusdir,               {.i = 0 } }, // focus left
-	{ MODKEY,                       XK_Right,   focusdir,               {.i = 1 } }, // focus right
-	{ MODKEY,                       XK_Up,      focusdir,               {.i = 2 } }, // focus up
-	{ MODKEY,                       XK_Down,    focusdir,               {.i = 3 } }, // focus down
-    { MODKEY|ShiftMask,             XK_equal,   incnmaster,             {.i = +1 } }, /* increase # of master windows */
-    { MODKEY|ShiftMask,             XK_minus,   incnmaster,             {.i = -1 } }, /* decrease # of master windows */
+    { MODKEY,                       XK_j,       focusstack,             {.i = +1 } },   /* move to next window */
+    { MODKEY,                       XK_k,       focusstack,             {.i = -1 } },   /* move to previous window */
+	{ MODKEY,                       XK_Left,    focusdir,               {.i = 0 } },    /* focus left */
+	{ MODKEY,                       XK_Right,   focusdir,               {.i = 1 } },    /* focus right */
+	{ MODKEY,                       XK_Up,      focusdir,               {.i = 2 } },    /* focus up */
+	{ MODKEY,                       XK_Down,    focusdir,               {.i = 3 } },    /* focus down */
+    { MODKEY|ShiftMask,             XK_equal,   incnmaster,             {.i = +1 } },   /* increase # of master windows */
+    { MODKEY|ShiftMask,             XK_minus,   incnmaster,             {.i = -1 } },   /* decrease # of master windows */
     { MODKEY,                       XK_l,       setmfact,               {.f = +0.05} }, /* increase window width */
     { MODKEY,                       XK_h,       setmfact,               {.f = -0.05} }, /* decrease window width */
-    { MODKEY,                       XK_space,   togglecanfocusfloating, {0} },
-    { MODKEY|ShiftMask,             XK_space,   togglefloating,         {0} }, /* make window float */
-    { MODKEY|ShiftMask,             XK_Return,  zoom,                   {0} }, /* make window master */
-    { MODKEY,                       XK_Tab,     view,                   {0} }, /* switch between tags */
-    { MODKEY|ShiftMask,             XK_q,       killclient,             {0} }, /* close window */
-    { MODKEY,                       XK_0,       view,                   {.ui = ~0 } }, /* show all windows */
-    { MODKEY|ShiftMask,             XK_0,       tag,                    {.ui = ~0 } }, /* show window on all tags */
-    { MODKEY,                       XK_period,  focusmon,               {.i = +1 } }, /* next monitor */
-    { MODKEY,                       XK_comma,   focusmon,               {.i = -1 } }, /* previous monitor */
-    { MODKEY|ShiftMask,             XK_period,  tagmon,                 {.i = +1 } }, /* move window to next monitor */
-    { MODKEY|ShiftMask,             XK_comma,   tagmon,                 {.i = -1 } }, /* move window to previous monitor */
-	{ MODKEY|ControlMask|ShiftMask, XK_period,  tagallmon,              {.i = +1 } },
-	{ MODKEY|ControlMask|ShiftMask, XK_comma,   tagallmon,              {.i = -1 } },
-    { MODKEY|ControlMask,           XK_space,   focusmaster,            {0} },
-	{ MODKEY|ShiftMask,             XK_j,       movestack,              {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_k,       movestack,              {.i = -1 } },
+    { MODKEY,                       XK_space,   togglecanfocusfloating, {0} },          /* toggle ability to focus floating */
+    { MODKEY|ShiftMask,             XK_space,   togglefloating,         {0} },          /* make window float */
+	{ MODKEY,                       XK_f,       togglefullscr,          {0} },          /* actual fullscreen */
+	{ MODKEY,                       XK_s,       togglesticky,           {0} },          /* make window visible on all tags */
+    { MODKEY|ShiftMask,             XK_Return,  zoom,                   {0} },          /* make window master */
+    { MODKEY,                       XK_Tab,     view,                   {0} },          /* switch between tags */
+    { MODKEY|ShiftMask,             XK_q,       killclient,             {0} },          /* close window */
+    { MODKEY,                       XK_0,       view,                   {.ui = ~0 } },  /* show all windows */
+    { MODKEY|ShiftMask,             XK_0,       tag,                    {.ui = ~0 } },  /* show window on all tags */
+    { MODKEY,                       XK_period,  focusmon,               {.i = +1 } },   /* next monitor */
+    { MODKEY,                       XK_comma,   focusmon,               {.i = -1 } },   /* previous monitor */
+    { MODKEY|ShiftMask,             XK_period,  tagmon,                 {.i = +1 } },   /* move window to next monitor */
+    { MODKEY|ShiftMask,             XK_comma,   tagmon,                 {.i = -1 } },   /* move window to previous monitor */
+	{ MODKEY|ControlMask|ShiftMask, XK_period,  tagallmon,              {.i = +1 } },   /* send all windows to next monitor */
+	{ MODKEY|ControlMask|ShiftMask, XK_comma,   tagallmon,              {.i = -1 } },   /* send all windows to previous monitor */
+    { MODKEY|ControlMask,           XK_space,   focusmaster,            {0} },          /* focus on the master window */
+	{ MODKEY|ShiftMask,             XK_j,       movestack,              {.i = +1 } },   /* move window down the stack */
+	{ MODKEY|ShiftMask,             XK_k,       movestack,              {.i = -1 } },   /* move window up the stack */
 
     /* LAYOUTS */
     { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
-    /* { MODKEY,           XK_f,   setlayout,  {.v = &layouts[1]} }, /1* float layout *1/ */
-    { MODKEY,           XK_m,   setlayout,  {.v = &layouts[2]} }, /* monocle layout */
-    { MODKEY,           XK_c,   setlayout,  {.v = &layouts[3]} }, /* centered master layout */
-    { MODKEY|ShiftMask, XK_c,   setlayout,  {.v = &layouts[4]} }, /* centered floating master layout */
-    { MODKEY,           XK_x,   setlayout,  {.v = &layouts[5]} }, /* deck layout */
-    { MODKEY,           XK_o,   setlayout,  {.v = &layouts[6]} }, /* fibonacci spiral layout */
-    { MODKEY|ShiftMask, XK_o,   setlayout,  {.v = &layouts[7]} }, /* fibonacci dwindle layout */
-    { MODKEY,           XK_g,   setlayout,  {.v = &layouts[8]} }, /* gapless grid layout */
+	{ MODKEY,           XK_b,   setlayout,  {.v = &layouts[1]} }, /* bottom stack layout */
+	{ MODKEY|ShiftMask, XK_b,   setlayout,  {.v = &layouts[2]} }, /* bottom stack horiziontal layout */
+    { MODKEY,           XK_m,   setlayout,  {.v = &layouts[3]} }, /* monocle layout */
+    { MODKEY,           XK_c,   setlayout,  {.v = &layouts[4]} }, /* centered master layout */
+    { MODKEY|ShiftMask, XK_c,   setlayout,  {.v = &layouts[5]} }, /* centered floating master layout */
+    { MODKEY,           XK_x,   setlayout,  {.v = &layouts[6]} }, /* deck layout */
+    { MODKEY,           XK_o,   setlayout,  {.v = &layouts[7]} }, /* fibonacci spiral layout */
+    { MODKEY|ShiftMask, XK_o,   setlayout,  {.v = &layouts[8]} }, /* fibonacci dwindle layout */
+    { MODKEY,           XK_g,   setlayout,  {.v = &layouts[9]} }, /* gapless grid layout */
+    /* { MODKEY,           XK_f,   setlayout,  {.v = &layouts[10]} }, /1* float layout *1/ */
 
     /* OTHER */
-    { MODKEY|ShiftMask, XK_b,    togglebar,  {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask, XK_r,    quit,       {1} }, /* restart dwm */
+    { MODKEY|ControlMask|ShiftMask, XK_b,    togglebar,  {0} }, /* show/hide bar */
+    { MODKEY|ShiftMask,             XK_r,    quit,       {1} }, /* restart dwm */
 
     /* TAGS */
     TAGKEYS(XK_1, 0)
