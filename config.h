@@ -79,7 +79,6 @@ static const char *termcmd[]  = { "st", NULL };
 
 #include <X11/XF86keysym.h>
 #include "movestack.c"
-#include "selfrestart.c"
 
 static Key keys[] = {
     /* SPAWN */
@@ -139,18 +138,18 @@ static Key keys[] = {
 
     /* LAYOUTS */
     { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
-    { MODKEY,           XK_f,   setlayout,  {.v = &layouts[1]} }, /* float layout */
+    /* { MODKEY,           XK_f,   setlayout,  {.v = &layouts[1]} }, /1* float layout *1/ */
     { MODKEY,           XK_m,   setlayout,  {.v = &layouts[2]} }, /* monocle layout */
-	{ MODKEY,           XK_c,   setlayout,  {.v = &layouts[3]} }, /* centered master layout */
-	{ MODKEY|ShiftMask, XK_c,   setlayout,  {.v = &layouts[4]} }, /* centered floating master layout */
-	{ MODKEY,           XK_x,   setlayout,  {.v = &layouts[5]} }, /* deck layout */
-	{ MODKEY,           XK_o,   setlayout,  {.v = &layouts[6]} }, /* fibonacci spiral layout */
-	{ MODKEY|ShiftMask, XK_o,   setlayout,  {.v = &layouts[7]} }, /* fibonacci dwindle layout */
-	{ MODKEY,           XK_g,   setlayout,  {.v = &layouts[8]} }, /* gapless grid layout */
+    { MODKEY,           XK_c,   setlayout,  {.v = &layouts[3]} }, /* centered master layout */
+    { MODKEY|ShiftMask, XK_c,   setlayout,  {.v = &layouts[4]} }, /* centered floating master layout */
+    { MODKEY,           XK_x,   setlayout,  {.v = &layouts[5]} }, /* deck layout */
+    { MODKEY,           XK_o,   setlayout,  {.v = &layouts[6]} }, /* fibonacci spiral layout */
+    { MODKEY|ShiftMask, XK_o,   setlayout,  {.v = &layouts[7]} }, /* fibonacci dwindle layout */
+    { MODKEY,           XK_g,   setlayout,  {.v = &layouts[8]} }, /* gapless grid layout */
 
     /* OTHER */
-    { MODKEY|ShiftMask,     XK_b,   togglebar,      {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask,     XK_r,   self_restart,   {0} }, /* restart dwm */
+    { MODKEY|ShiftMask, XK_b,    togglebar,  {0} }, /* show/hide bar */
+    { MODKEY|ShiftMask, XK_r,    quit,       {1} }, /* restart dwm */
 
     /* TAGS */
     TAGKEYS(XK_1, 0)
