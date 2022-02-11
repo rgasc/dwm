@@ -1,30 +1,30 @@
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappih    = 10;       /* horiz inner gap between windows */
-static const unsigned int gappiv    = 10;       /* vert inner gap between windows */
-static const unsigned int gappoh    = 10;       /* horiz outer gap between windows and screen edge */
-static const unsigned int gappov    = 10;       /* vert outer gap between windows and screen edge */
-static int smartgaps                = 1;        /* 1 means no outer gap when there is only one window */
+static const unsigned int borderpx = 2;         /* border pixel of windows */
+static const unsigned int snap = 32;            /* snap pixel */
+static const unsigned int gappih = 10;          /* horiz inner gap between windows */
+static const unsigned int gappiv = 10;          /* vert inner gap between windows */
+static const unsigned int gappoh = 10;          /* horiz outer gap between windows and screen edge */
+static const unsigned int gappov = 10;          /* vert outer gap between windows and screen edge */
+static int smartgaps = 1;                       /* 1 means no outer gap when there is only one window */
 static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows selected monitor, >0: pin systray to monitor X */
-static const unsigned int systrayonleft = 0;   	/* 0: systray in the right corner, >0: systray on left of status text */
+static const unsigned int systrayonleft = 0; 	/* 0: systray in the right corner, >0: systray on left of status text */
 static const unsigned int systrayspacing = 2;   /* systray spacing */
-static const int swallowfloating    = 1;        /* 1 means swallow floating windows by default */
+static const int swallowfloating = 1;           /* 1 means swallow floating windows by default */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
-static const int showsystray        = 1;        /* 0 means no systray */
-static const int showbar            = 1;        /* 0 means no bar */
-static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "Iosevka Extended:size=10" };
-static const char colour1[]         = "#181a1b";
-static const char colour2[]         = "#0c0d0e";
-static const char colour3[]         = "#c5c8c6";
-static const char *colors[][3]      = {
+static const int showsystray = 1;               /* 0 means no systray */
+static const int showbar = 1;                   /* 0 means no bar */
+static const int topbar = 1;                    /* 0 means bottom bar */
+static const char *fonts[] = { "Iosevka Extended:size=10" };
+static const char colour1[] = "#181a1b";
+static const char colour2[] = "#0c0d0e";
+static const char colour3[] = "#c5c8c6";
+static const char *colors[][3] = {
     /*                  fg          bg          border   */
     [SchemeNorm]    = { colour3,    colour1,    colour2 },
     [SchemeSel]     = { colour1,    colour3,    colour3 },
-	[SchemeTitle]   = { colour3,    colour1,    colour1 },
+    [SchemeTitle]   = { colour3,    colour1,    colour1 },
 };
 
 /* tagging */
@@ -36,7 +36,7 @@ static const Rule rules[] = {
      *	WM_NAME(STRING) = title
      */
     /* class                    instance    title           tags mask   isfloating  isterminal  noswallow   monitor */
-	{ "St",                     NULL,       NULL,           0,          0,          1,          0,          -1 },
+    { "St",                     NULL,       NULL,           0,          0,          1,          0,          -1 },
     { NULL,                     NULL,       "Event Tester", 0,          0,          0,          1,          -1 },
     { "Blueman-manager",        NULL,       NULL,           0,          1,          0,          0,          -1 },
     { "Nm-connection-editor",   NULL,       NULL,           0,          1,          0,          0,          -1 },
@@ -56,19 +56,19 @@ static const Layout layouts[] = {
     /* symbol     arrange function */
     { "[]=",      tile },    /* first entry is default */
     { "[M]",      monocle },
-	{ "H[]",      deck },
-	{ "|M|",      centeredmaster },
-	{ ">M>",      centeredfloatingmaster },
-	{ "[@]",      spiral },
-	{ "[\\]",     dwindle },
-	{ ":::",      gaplessgrid },
-	{ "TTT",      bstack },
-	{ "===",      bstackhoriz },
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ NULL,       NULL },
-	/* { "HHH",      grid }, */
-	/* { "###",      nrowgrid }, */
-	/* { "---",      horizgrid }, */
+    { "H[]",      deck },
+    { "|M|",      centeredmaster },
+    { ">M>",      centeredfloatingmaster },
+    { "[@]",      spiral },
+    { "[\\]",     dwindle },
+    { ":::",      gaplessgrid },
+    { "TTT",      bstack },
+    { "===",      bstackhoriz },
+    { "><>",      NULL },    /* no layout function means floating behavior */
+    { NULL,       NULL },
+    /* { "HHH",      grid }, */
+    /* { "###",      nrowgrid }, */
+    /* { "---",      horizgrid }, */
 };
 
 /* key definitions */
@@ -78,7 +78,7 @@ static const Layout layouts[] = {
     { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
     { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
     { MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
-	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
+    { MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} }, \
 
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
@@ -123,21 +123,21 @@ static Key keys[] = {
     /* MANAGE WINDOWS */
     { MODKEY,                       XK_j,       focusstack,             {.i = +1 } },   /* move to next window */
     { MODKEY,                       XK_k,       focusstack,             {.i = -1 } },   /* move to previous window */
-	{ MODKEY,                       XK_Left,    focusdir,               {.i = 0 } },    /* focus left */
-	{ MODKEY,                       XK_Right,   focusdir,               {.i = 1 } },    /* focus right */
-	{ MODKEY,                       XK_Up,      focusdir,               {.i = 2 } },    /* focus up */
-	{ MODKEY,                       XK_Down,    focusdir,               {.i = 3 } },    /* focus down */
+    { MODKEY,                       XK_Left,    focusdir,               {.i = 0 } },    /* focus left */
+    { MODKEY,                       XK_Right,   focusdir,               {.i = 1 } },    /* focus right */
+    { MODKEY,                       XK_Up,      focusdir,               {.i = 2 } },    /* focus up */
+    { MODKEY,                       XK_Down,    focusdir,               {.i = 3 } },    /* focus down */
     { MODKEY|ShiftMask,             XK_equal,   incnmaster,             {.i = +1 } },   /* increase # of master windows */
     { MODKEY|ShiftMask,             XK_minus,   incnmaster,             {.i = -1 } },   /* decrease # of master windows */
     { MODKEY,                       XK_l,       setmfact,               {.f = +0.05} }, /* increase window width */
     { MODKEY,                       XK_h,       setmfact,               {.f = -0.05} }, /* decrease window width */
-	{ MODKEY|ShiftMask,             XK_h,       setcfact,               {.f = +0.25} }, /* increase cfact */
-	{ MODKEY|ShiftMask,             XK_l,       setcfact,               {.f = -0.25} }, /* decrease cfact */
-	{ MODKEY|ShiftMask,             XK_o,       setcfact,               {.f =  0.00} }, /* reset cfact */
+    { MODKEY|ShiftMask,             XK_h,       setcfact,               {.f = +0.25} }, /* increase cfact */
+    { MODKEY|ShiftMask,             XK_l,       setcfact,               {.f = -0.25} }, /* decrease cfact */
+    { MODKEY|ShiftMask,             XK_o,       setcfact,               {.f =  0.00} }, /* reset cfact */
     { MODKEY,                       XK_space,   togglecanfocusfloating, {0} },          /* toggle ability to focus floating */
     { MODKEY|ShiftMask,             XK_space,   togglefloating,         {0} },          /* make window float */
-	{ MODKEY,                       XK_f,       togglefullscr,          {0} },          /* actual fullscreen */
-	{ MODKEY,                       XK_s,       togglesticky,           {0} },          /* make window visible on all tags */
+    { MODKEY,                       XK_f,       togglefullscr,          {0} },          /* actual fullscreen */
+    { MODKEY,                       XK_s,       togglesticky,           {0} },          /* make window visible on all tags */
     { MODKEY|ShiftMask,             XK_Return,  zoom,                   {0} },          /* make window master */
     { MODKEY,                       XK_Tab,     view,                   {0} },          /* switch between tags */
     { MODKEY|ShiftMask,             XK_q,       killclient,             {0} },          /* close window */
@@ -147,11 +147,11 @@ static Key keys[] = {
     { MODKEY,                       XK_comma,   focusmon,               {.i = -1 } },   /* previous monitor */
     { MODKEY|ShiftMask,             XK_period,  tagmon,                 {.i = +1 } },   /* move window to next monitor */
     { MODKEY|ShiftMask,             XK_comma,   tagmon,                 {.i = -1 } },   /* move window to previous monitor */
-	{ MODKEY|ControlMask|ShiftMask, XK_period,  tagallmon,              {.i = +1 } },   /* send all windows to next monitor */
-	{ MODKEY|ControlMask|ShiftMask, XK_comma,   tagallmon,              {.i = -1 } },   /* send all windows to previous monitor */
+    { MODKEY|ControlMask|ShiftMask, XK_period,  tagallmon,              {.i = +1 } },   /* send all windows to next monitor */
+    { MODKEY|ControlMask|ShiftMask, XK_comma,   tagallmon,              {.i = -1 } },   /* send all windows to previous monitor */
     { MODKEY|ControlMask,           XK_space,   focusmaster,            {0} },          /* focus on the master window */
-	{ MODKEY|ShiftMask,             XK_j,       movestack,              {.i = +1 } },   /* move window down the stack */
-	{ MODKEY|ShiftMask,             XK_k,       movestack,              {.i = -1 } },   /* move window up the stack */
+    { MODKEY|ShiftMask,             XK_j,       movestack,              {.i = +1 } },   /* move window down the stack */
+    { MODKEY|ShiftMask,             XK_k,       movestack,              {.i = -1 } },   /* move window up the stack */
 
     /* LAYOUTS */
     { MODKEY,           XK_t,   setlayout,  {.v = &layouts[0]} }, /* tile layout */
@@ -162,15 +162,15 @@ static Key keys[] = {
     { MODKEY,           XK_u,   setlayout,  {.v = &layouts[5]} }, /* spiral layout */
     { MODKEY|ShiftMask, XK_u,   setlayout,  {.v = &layouts[6]} }, /* dwindle layout */
     { MODKEY,           XK_g,   setlayout,  {.v = &layouts[7]} }, /* gapless grid layout */
-	{ MODKEY,           XK_b,   setlayout,  {.v = &layouts[8]} }, /* bstack layout */
-	{ MODKEY|ShiftMask, XK_b,   setlayout,  {.v = &layouts[9]} }, /* bstackhoriz layout */
+    { MODKEY,           XK_b,   setlayout,  {.v = &layouts[8]} }, /* bstack layout */
+    { MODKEY|ShiftMask, XK_b,   setlayout,  {.v = &layouts[9]} }, /* bstackhoriz layout */
     /* { MODKEY,           XK_f,   setlayout,  {.v = &layouts[10]} }, /1* float layout *1/ */
 
     /* GAPS */
-	{ ALTKEY,              XK_g,      incrgaps,       {.i = +1 } },
-	{ ALTKEY|ShiftMask,    XK_g,      incrgaps,       {.i = -1 } },
-	{ ALTKEY,              XK_0,      defaultgaps,    {0} },
-	{ ALTKEY|ShiftMask,    XK_0,      togglegaps,     {0} },
+    { ALTKEY,              XK_g,      incrgaps,       {.i = +1 } },
+    { ALTKEY|ShiftMask,    XK_g,      incrgaps,       {.i = -1 } },
+    { ALTKEY,              XK_0,      defaultgaps,    {0} },
+    { ALTKEY|ShiftMask,    XK_0,      togglegaps,     {0} },
 
     /* OTHER */
     { MODKEY|ControlMask|ShiftMask, XK_b,    togglebar,  {0} }, /* show/hide bar */
@@ -194,8 +194,8 @@ static Button buttons[] = {
     /* click                event mask      button          function        argument */
     /* { ClkLtSymbol,          0,              Button1,        setlayout,      {0} }, */
     /* { ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} }, */
-	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
-	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+    { ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
+    { ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
     { ClkWinTitle,          0,              Button2,        zoom,           {0} },
     { ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
     { ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
@@ -212,6 +212,6 @@ static Button buttons[] = {
 /* trigger signals using `xsetroot -name "fsignal:<signum>"` */
 static Signal signals[] = {
     /* signum       function        argument  */
-	{ 1,            viewnext,       {0} },
-	{ 2,            viewprev,       {0} },
+    { 1,            viewnext,       {0} },
+    { 2,            viewprev,       {0} },
 };
