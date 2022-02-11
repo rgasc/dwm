@@ -131,6 +131,12 @@ typedef struct {
 } Key;
 
 typedef struct {
+	unsigned int signum;
+	void (*func)(const Arg *);
+	const Arg arg;
+} Signal;
+
+typedef struct {
 	const char *symbol;
 	void (*arrange)(Monitor *);
 } Layout;
@@ -219,6 +225,7 @@ static void grabbuttons(Client *c, int focused);
 static void grabkeys(void);
 static void incnmaster(const Arg *arg);
 static void keypress(XEvent *e);
+static int fake_signal(void);
 static void killclient(const Arg *arg);
 static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
@@ -226,6 +233,8 @@ static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
+static unsigned int nexttag(void);
+static unsigned int prevtag(void);
 static Client *nexttiled(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
@@ -284,6 +293,8 @@ static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
+static void viewnext(const Arg *arg);
+static void viewprev(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static Client *wintosystrayicon(Window w);
@@ -1335,6 +1346,47 @@ keypress(XEvent *e)
 			keys[i].func(&(keys[i].arg));
 }
 
+int
+fake_signal(void)
+{
+	char fsignal[256];
+	char indicator[9] = "fsignal:";
+	char str_signum[16];
+	int i, v, signum;
+	size_t len_fsignal, len_indicator = strlen(indicator);
+
+	// Get root name property
+	if (gettextprop(root, XA_WM_NAME, fsignal, sizeof(fsignal))) {
+		len_fsignal = strlen(fsignal);
+
+		// Check if this is indeed a fake signal
+		if (len_indicator > len_fsignal ? 0 : strncmp(indicator, fsignal, len_indicator) == 0) {
+			memcpy(str_signum, &fsignal[len_indicator], len_fsignal - len_indicator);
+			str_signum[len_fsignal - len_indicator] = '\0';
+
+			// Convert string value into managable integer
+			for (i = signum = 0; i < strlen(str_signum); i++) {
+				v = str_signum[i] - '0';
+				if (v >= 0 && v <= 9) {
+					signum = signum * 10 + v;
+				}
+			}
+
+			// Check if a signal was found, and if so handle it
+			if (signum)
+				for (i = 0; i < LENGTH(signals); i++)
+					if (signum == signals[i].signum && signals[i].func)
+						signals[i].func(&(signals[i].arg));
+
+			// A fake signal was sent
+			return 1;
+		}
+	}
+
+	// No fake signal was sent, so proceed with update
+	return 0;
+}
+
 void
 killclient(const Arg *arg)
 {
@@ -1542,6 +1594,20 @@ movemouse(const Arg *arg)
 	}
 }
 
+unsigned int
+nexttag(void)
+{
+	unsigned int seltag = selmon->tagset[selmon->seltags];
+	return seltag == (1 << (LENGTH(tags) - 1)) ? 1 : seltag << 1;
+}
+
+unsigned int
+prevtag(void)
+{
+	unsigned int seltag = selmon->tagset[selmon->seltags];
+	return seltag == 1 ? (1 << (LENGTH(tags) - 1)) : seltag >> 1;
+}
+
 Client *
 nexttiled(Client *c)
 {
@@ -1581,8 +1647,10 @@ propertynotify(XEvent *e)
 		updatesystray();
 	}
 
-    if ((ev->window == root) && (ev->atom == XA_WM_NAME))
-		updatestatus();
+	if ((ev->window == root) && (ev->atom == XA_WM_NAME)) {
+        if (!fake_signal())
+            updatestatus();
+    }
 	else if (ev->state == PropertyDelete)
 		return; /* ignore */
 	else if ((c = wintoclient(ev->window))) {
@@ -2021,7 +2089,7 @@ setup(void)
 	wmatom[WMState] = XInternAtom(dpy, "WM_STATE", False);
 	wmatom[WMTakeFocus] = XInternAtom(dpy, "WM_TAKE_FOCUS", False);
 	netatom[NetActiveWindow] = XInternAtom(dpy, "_NET_ACTIVE_WINDOW", False);
-   netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
+    netatom[NetSupported] = XInternAtom(dpy, "_NET_SUPPORTED", False);
 	netatom[NetSystemTray] = XInternAtom(dpy, "_NET_SYSTEM_TRAY_S0", False);
 	netatom[NetSystemTrayOP] = XInternAtom(dpy, "_NET_SYSTEM_TRAY_OPCODE", False);
 	netatom[NetSystemTrayOrientation] = XInternAtom(dpy, "_NET_SYSTEM_TRAY_ORIENTATION", False);
@@ -2958,6 +3026,18 @@ swallowingclient(Window w)
 	return NULL;
 }
 
+void
+viewnext(const Arg *arg)
+{
+	view(&(const Arg){.ui = nexttag()});
+}
+
+void
+viewprev(const Arg *arg)
+{
+	view(&(const Arg){.ui = prevtag()});
+}
+ 
 Client *
 wintoclient(Window w)
 {
