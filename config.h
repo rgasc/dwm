@@ -88,6 +88,8 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-i", NULL };
 static const char *termcmd[]  = { "st", NULL };
+static const char scratchpadname[] = "scratchpad";
+static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", "-e", "nvim", NULL };
 
 #include <X11/XF86keysym.h>
 #include "movestack.c"
@@ -99,14 +101,16 @@ static Key keys[] = {
     { MODKEY,               XK_p,       spawn,  SHCMD("st -e htop") },
     { MODKEY,               XK_v,       spawn,  SHCMD("st -e pulsemixer") },
     { MODKEY|ShiftMask,     XK_v,       spawn,  SHCMD("noisetorch") },
-    { MODKEY,               XK_w,       spawn,  SHCMD("firefox") },
+    { MODKEY,               XK_w,       spawn,  SHCMD("$BROWSER") },
     { MODKEY,               XK_y,       spawn,  SHCMD("signal-desktop --use-tray-icon") },
     { MODKEY|ShiftMask,     XK_y,       spawn,  SHCMD("resize_signal") },
     { 0,                    XK_Print,   spawn,  SHCMD("maim -s -u | xclip -selection clipboard -t image/png") },
     { MODKEY|ShiftMask,     XK_x,       spawn,  SHCMD("slock") },
-    { MODKEY,               XK_n,       spawn,  SHCMD("st -e newsboat") },
+    { MODKEY,               XK_n,       spawn,  SHCMD("st -e zsh -c n") },
+    { MODKEY|ShiftMask,     XK_n,       spawn,  SHCMD("st -e newsboat") },
     { MODKEY,               XK_z,       spawn,  SHCMD("hide_signal") },
     { MODKEY|ShiftMask,     XK_z,       spawn,  SHCMD("xclip -selection primary -i /dev/null && xclip -selection clipboard -i /dev/null") },
+    { MODKEY|ShiftMask,     XK_e,       spawn,  SHCMD("exit_dmenu") },
     { MODKEY|ShiftMask,     XK_e,       spawn,  SHCMD("exit_dmenu") },
 
     /* FUNCTION KEYS */
@@ -173,8 +177,9 @@ static Key keys[] = {
     { ALTKEY|ShiftMask,    XK_0,      togglegaps,     {0} },
 
     /* OTHER */
-    { MODKEY|ControlMask|ShiftMask, XK_b,    togglebar,  {0} }, /* show/hide bar */
-    { MODKEY|ShiftMask,             XK_r,    quit,       {1} }, /* restart dwm */
+    { MODKEY|ControlMask|ShiftMask, XK_b,       togglebar,      {0} }, /* show/hide bar */
+    { MODKEY|ShiftMask,             XK_r,       quit,           {1} }, /* restart dwm */
+	{ MODKEY,                       XK_grave,   togglescratch,  {.v = scratchpadcmd } }, /* toggle scratchpad */
 
     /* TAGS */
     TAGKEYS(XK_1, 0)
